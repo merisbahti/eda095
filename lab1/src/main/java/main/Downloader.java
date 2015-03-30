@@ -29,16 +29,20 @@ public class Downloader {
         }
         // download all pdfs and save them.        
         for (URL u : pdfURLs) {
-            try {
-            ReadableByteChannel rbc = Channels.newChannel(u.openStream());
-            String tempResName = u.getFile();
-            String filename = tempResName.substring(tempResName.lastIndexOf('/')+1, 
-                tempResName.length() );
-            System.out.println(filename);
-            FileOutputStream fos = new FileOutputStream(downloadfolder+filename);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            }catch (IOException e) {
-                System.err.println("IOException when downloading " + u.getFile());
+            if (u.openConnection().getContentType().contains("application/pdf")) {
+                try {
+                    ReadableByteChannel rbc = Channels.newChannel(u.openStream());
+                    String tempResName = u.getFile();
+                    String filename = tempResName.substring(tempResName.lastIndexOf('/')+1, 
+                        tempResName.length() );
+                    System.out.println(filename);
+                    FileOutputStream fos = new FileOutputStream(downloadfolder+filename);
+                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                }catch (IOException e) {
+                    System.err.println("IOException when downloading " + u.getFile());
+                }
+            } else {
+                System.out.println("Not proper pdf " + u.getFile() + " type was: " + u.openConnection().getContentType());
             }
         }
     } catch (MalformedURLException e) {

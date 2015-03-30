@@ -16,14 +16,18 @@ public class Runner implements Runnable {
     }
     
     public void run() {
-        System.out.println(u.getFile() + " started");
         try {
-            ReadableByteChannel rbc = Channels.newChannel(u.openStream());
-            String tempResName = u.getFile();
-            String filename = tempResName.substring(tempResName.lastIndexOf('/')+1, 
-                tempResName.length());
-            FileOutputStream fos = new FileOutputStream(downloadfolder+filename);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            if (u.openConnection().getContentType().contains("application/pdf")) {
+                System.out.println(u.getFile() + " started");
+                ReadableByteChannel rbc = Channels.newChannel(u.openStream());
+                String tempResName = u.getFile();
+                String filename = tempResName.substring(tempResName.lastIndexOf('/')+1, 
+                    tempResName.length());
+                FileOutputStream fos = new FileOutputStream(downloadfolder+filename);
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            } else {
+                System.out.println("Not proper pdf " + u.getFile() + " type was: " + u.openConnection().getContentType());
+            }
         } catch (IOException e) {
             System.out.println("IOException caught");
             System.out.println(e.getMessage());
