@@ -19,8 +19,6 @@ public class Downloader {
         BufferedReader bfr = new BufferedReader(new InputStreamReader(url.openStream()));
         String line = ""; 
         ArrayList<URL> urls = new ArrayList<URL>();
-        //Pattern p = Pattern.compile("<a.*?href=\"(.*?\\.pdf)\".*?>");
-        //Pattern p = Pattern.compile("<a.*?href=\"([^\"]*\\.pdf)\".*>");
         Pattern p = Pattern.compile("<a\\s+(?:[^>]*?\\s+)?href=\"([^\"]*\\.pdf)\"");
         StringBuilder everything = new StringBuilder();
         while ((line = bfr.readLine()) != null) {

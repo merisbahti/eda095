@@ -46,7 +46,9 @@ public class Runner implements Runnable{
     }
 
     // atomic 
-    public synchronized URL popList() {
-        return urls.remove(0);
+    public URL popList() {
+        synchronized (urls) {
+            return urls.remove(0);
+        }
     }
 }

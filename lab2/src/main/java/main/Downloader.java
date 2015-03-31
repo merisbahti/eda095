@@ -17,11 +17,9 @@ public class Downloader {
         String downloadfolder = "downloadfolder/";
         // Read from URL and parse the text, add all URL's to pdfURLs
         BufferedReader bfr = new BufferedReader(new InputStreamReader(url.openStream()));
-        //Pattern p = Pattern.compile("<a.*?href=\"(.*?\\.pdf)\".*?>");
         Pattern p = Pattern.compile("<a\\s+(?:[^>]*?\\s+)?href=\"([^\"]*\\.pdf)\"");
         ArrayList<URL> urls = new ArrayList<URL>();
         String line = ""; 
-        // todo
         ExecutorService pool = Executors.newFixedThreadPool(5);
         StringBuilder everything = new StringBuilder();
         while ((line = bfr.readLine()) != null) {
