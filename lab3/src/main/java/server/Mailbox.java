@@ -2,45 +2,53 @@ package server;
 
 import java.util.concurrent.*;
 import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.*;
 
 public class Mailbox {
     ArrayList<Message> mails;
     int lastClientId = 0;
-    ConcurrentMap<String, OutputStream> recievers;
+    ConcurrentMap<String, Socket> recievers;
 
     public Mailbox() {
         mails = new ArrayList<Message>();
-        recievers = new ConcurrentHashMap<String, OutputStream>();
+        recievers = new ConcurrentHashMap<String, Socket>();
     }
 
-    // Make this return an ArrayList<String> later on, hokay.
-    public synchronized ArrayList<Message> getMessages() throws InterruptedException {
-        while (mails.size() == 0) wait();
-        ArrayList<Message> tmpList = mails;
-        mails = new ArrayList<Message>();
-        return tmpList;
+    public ArrayList<Message> getMessages() throws InterruptedException {
+        synchronized (mails) {
+            while (mails.size() == 0) mails.wait();
+            ArrayList<Message> tmpList = mails;
+            mails = new ArrayList<Message>();
+            return tmpList;
+        }
     }
 
-    public synchronized void putMessage(Message m) {
+    public void putMessage(Message m) throws InterruptedException {
         // check so that id is in recievers
-        mails.add(m);
-        notifyAll();
+        synchronized (mails) {
+            mails.add(m);
+            mails.notifyAll();
+        }
     }
 
-    public String registerReciever(OutputStream os) {
-        lastClientId++;
-        String id = String.valueOf(lastClientId);
-        recievers.put(id, os); 
-        return id;
+    public String registerReciever(Socket os) throws InterruptedException {
+        synchronized (recievers) {
+            lastClientId++;
+            String id = String.valueOf(lastClientId);
+            recievers.put(id, os); 
+            return id;
+        }
     }
 
     public boolean removeReciever(String id) {
-        return (recievers.remove(id) != null ? true : false);
+        synchronized (recievers) {
+            return recievers.remove(id) != null;
+        }
     }
         
-    public Set<Map.Entry<String, OutputStream>> getRecievers() {
+    public Set<Map.Entry<String, Socket>> getRecievers() {
         return recievers.entrySet();
     }
 }

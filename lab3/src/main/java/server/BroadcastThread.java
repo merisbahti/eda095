@@ -16,11 +16,15 @@ public class BroadcastThread extends Thread {
             try {
                 ArrayList<Message> mx = mb.getMessages();
                 for (Message m : mx)
-                    for (Map.Entry<String, OutputStream> os : mb.getRecievers()) 
+                    for (Map.Entry<String, Socket> os : mb.getRecievers()) 
                         if (os.getKey() != m.getId()) { 
-                            PrintWriter out = new PrintWriter(os.getValue(), true);
-                            out.println(m.toString());
-                            out.flush();
+                            try {
+                                PrintWriter out = new PrintWriter(os.getValue().getOutputStream(), true);
+                                out.println(m.toString());
+                                out.flush();
+                            } catch (IOException e) {
+                                System.err.println("IOException when sending msg to" + os.getKey());
+                            }
                         }
             } catch (InterruptedException e) {
                 System.out.println("BroadcastThread Caught InterruptedException:\n" + e.getMessage());

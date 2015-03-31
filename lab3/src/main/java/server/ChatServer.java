@@ -12,11 +12,15 @@ public class ChatServer {
             ServerSocket socket = new ServerSocket(1337);
             while (true) {
                 Socket newClient = socket.accept();
-                String id = mb.registerReciever(newClient.getOutputStream());
-                (new ClientHandler(newClient.getInputStream(), mb, id)).start();
+                System.out.println("Accepting new client");
+                String id = mb.registerReciever(newClient);
+                (new ClientHandler(newClient, mb, id)).start();
             }
         } catch (IOException e) {
             System.out.println("IOException caught in ChatServer:\n" + e.getMessage());
+        } catch (InterruptedException e) {
+            System.out.println("InterruptedException caught in ChatServer:\n" + e.getMessage());
+
         }
   }
 }
