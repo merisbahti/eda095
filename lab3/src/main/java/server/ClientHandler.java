@@ -19,8 +19,7 @@ public class ClientHandler extends Thread {
             BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
             String line = "";
             boolean online = true;
-            while (online) {
-                line = br.readLine();
+            while (online && (line = br.readLine()) != null) {
                 mb.putMessage(new Message(id, line));
                 if (line.startsWith("/quit")) online = false;
             }
