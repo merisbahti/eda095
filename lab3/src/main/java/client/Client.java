@@ -1,4 +1,5 @@
 package client;
+import main.ChatWindow;
 
 import java.net.*;
 import java.io.*;
@@ -16,7 +17,7 @@ public class Client {
                 out.println(userInput);
                 isAlive = !userInput.startsWith("/quit") && !socket.isClosed();
             }
-            System.out.println("Connection closed.");
+            System.out.println("Exiting client.");
         } catch (UnknownHostException e) {
             System.out.println("Unknown host exception:\n"+e.getMessage());
         } catch (IOException e) {

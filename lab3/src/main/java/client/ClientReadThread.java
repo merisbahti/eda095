@@ -14,7 +14,7 @@ public class ClientReadThread extends Thread {
             BufferedReader br = new BufferedReader(new InputStreamReader(is.getInputStream()));
             String line = "";
             while ((line = br.readLine()) != null) System.out.println(line);
-            System.out.println("Closing connection");
+            System.out.println("Connection has been closed, type /quit to exit.");
             is.close();
         } catch (IOException e) {
             System.out.println("IOException in ClientReadThread:\n"+e.getMessage());
