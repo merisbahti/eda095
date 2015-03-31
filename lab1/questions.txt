@@ -1,0 +1,57 @@
+1a)
+Server:     130.235.34.36
+Address:    130.235.34.36#53
+ 
+Non-authoritative answer:
+Name:   www.lth.se
+Address: 130.235.209.220
+
+1b) login.student.lth.se
+
+=============================================================================
+
+2a)
+traceroute to www.colorado.edu (128.138.129.98), 30 hops max, 60 byte packets
+ 1  d001b-gw-190.student.lth.se (130.235.34.2)  3.793 ms  3.795 ms  3.829 ms (lu)
+ 2  c001--d001b.net.lu.se (130.235.217.45)  6.116 ms  6.126 ms  6.187 ms (lu)
+ 3  x001--c001.net.lu.se (130.235.217.10)  7.270 ms  7.284 ms  7.348 ms (lu)
+ 4  lu-br1.sunet.se (193.11.20.9)  0.315 ms  0.313 ms  0.306 ms (sunet)
+ 5  m1fre-xe-5-2-0.sunet.se (130.242.85.1)  9.866 ms  9.837 ms  9.854 ms(sunet)
+ 6  t1fre-ae5-v1.sunet.se (130.242.83.46)  9.895 ms  9.908 ms  9.938 ms(sunet)
+ 7  se-fre.nordu.net (109.105.102.9)  9.859 ms  9.922 ms  9.910 ms (nordu)
+ 8  dk-ore.nordu.net (109.105.97.130)  18.648 ms  18.619 ms  18.609 ms (nordu)
+ 9  nl-sar.nordu.net (109.105.97.137)  29.119 ms  29.099 ms dk-uni.nordu.net (109.105.97.133)  30.138 ms (nordu) 
+10  us-man.nordu.net (109.105.97.139)  113.329 ms uk-hex.nordu.net (109.105.97.127)  49.414 ms  49.402 ms (nordu)
+11  xe-2-3-0.118.rtr.newy32aoa.net.internet2.edu (109.105.98.10)  113.741 ms us-ash.nordu.net (109.105.97.141)  112.070 ms  111.947 ms (internet2)
+12  us-man.nordu.net (109.105.97.142)  119.604 ms  119.595 ms et-10-0-0.116.rtr.chic.net.internet2.edu (198.71.46.166)  135.374 ms  (nordu)
+13  xe-2-3-0.118.rtr.newy32aoa.net.internet2.edu (109.105.98.10)  119.616 ms ae0.3454.core-l3.frgp.net (192.43.217.223)  157.357 ms  157.487 ms  (internet2)
+14  et-10-0-0.116.rtr.chic.net.internet2.edu (198.71.46.166)  141.427 ms  141.393 ms  142.129 ms  (internet2)
+15  ae0.3454.core-l3.frgp.net (192.43.217.223)  163.561 ms  163.383 ms  163.377 ms (NOAA/ERL Space Environment Laboratory (NSEL))
+16  ucb-re-frgpl3.colorado.edu (198.59.55.1)  170.187 ms  169.718 ms fw-juniper.colorado.edu (128.138.81.194)  164.435 ms (uni col)
+17  compmx-tcommx.colorado.edu (128.138.81.253)  170.092 ms  169.905 ms hut-fw.colorado.edu (128.138.81.249)  158.873 ms (uni col)
+18  comp-hut.colorado.edu (128.138.81.11)  164.762 ms  165.109 ms  165.281 ms (uni col)
+19  www.colorado.edu (128.138.129.98)  159.056 ms  159.124 ms  159.218 ms (uni col)
+ 
+2b)
+lu: 130.235.34.2, 130.235.217.45, 130.235.217.10
+sunet: 193.11.20.9, 130.242.85.1, 130.242.83.46
+nordu: 109.105.102.9, 109.105.97.130, 109.105.97.137, 109.105.97.139, 109.105.97.142
+internet2: 109.105.98.10, 109.105.98.10, 198.71.46.166
+NSEL: 192.43.217.223
+univ colorado: 198.59.55.1, 128.138.81.253, 128.138.81.11, 128.138.129.98
+ 
+=============================================================================
+
+3a)
+loopback device:
+lo       65536      494      0      0 0           494      0      0      0 LRU
+3b)130.235.34.0 
+localhost addr is 127.0.0.1
+3c)
+tcp        0      0 *:irdmi                 *:*                     LISTEN      2468/python3  (my python webapp)        
+tcp        0      0 meris-stat:39605        login.student.lth.s:ssh ESTABLISHED 1990/ssh      (SSH connection to school)
+tcp        0      0 meris-stat:35695        ggc-mmx2.bredband:https ESTABLISHED 1039/chrome   (Chrome browser, HTTPS connection)
+ 
+3d) states can be seen above! notice how webapp is on "listen".
+
+=============================================================================

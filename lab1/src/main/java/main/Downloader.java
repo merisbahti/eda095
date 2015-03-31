@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class Downloader {
   public static void main(String[] args) {
     try {
-        //url = new URL("http://cs.lth.se/eda031/examination/");
         URL url = new URL(args.length == 0 ? "http://cs.lth.se/eda095/tidigare-aar/eda095-2014/foerelaesningar/?no_cache=1" : args[0] );
         String downloadfolder = "downloadfolder/";
         // Read from URL and parse the text, add all URL's to pdfURLs
@@ -24,8 +23,8 @@ public class Downloader {
         }
         Matcher m = p.matcher(everything);
         while (m.find()) {
-            pdfURLs.add(new URL(m.group(1)));
-            System.out.println(m.group(1));
+            pdfURLs.add(new URL(url, m.group(1)));
+            //System.out.println(m.group(1)); // prints the matched url
         }
         // download all pdfs and save them.        
         for (URL u : pdfURLs) {
