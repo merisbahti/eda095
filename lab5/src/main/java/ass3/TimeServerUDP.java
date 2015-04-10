@@ -32,8 +32,8 @@ class TimeServerUDP {
                         break;
                     case "date": 
                         sendDatagram(ds, 
-                            DateFormat.getDateInstance(DateFormat.LONG, new Locale("sv", "SE")).format(now).toString()
-                            ,inet, outPort);
+                            DateFormat.getDateInstance(DateFormat.LONG, new Locale("sv", "SE")).format(now).toString(),
+                            inet, outPort);
                         break;
                     default:     
                         sendDatagram(ds, "Specify either time, date, or both as arguments", inet, outPort);
