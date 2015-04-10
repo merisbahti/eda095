@@ -1,6 +1,7 @@
 package ass4;
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 public class MCSender {
 
@@ -8,19 +9,10 @@ public class MCSender {
         try {
             MulticastSocket ms = new MulticastSocket();
             ms.setTimeToLive(1);
-            InetAddress ia = InetAddress.getByName(args[0]);
-            //InetAddress ia = InetAddress.getByName("experiment.mcast.net");
+            InetAddress ia = InetAddress.getByName((args.length == 0 ? "experiment.mcast.net" : args[0]));
+            Scanner scan = new Scanner(System.in);
             while(true) {
-                int ch;
-                String s = new String();
-                do {
-                    ch = System.in.read();
-                    if (ch!='\n') {
-                        s = s+(char)ch;
-                    }
-                    if (ch == 'q') 
-                        System.exit(1);
-                } while(ch!='\n');
+                String s = scan.nextLine();
                 System.out.println("Sending message: "+s);
                 byte[] buf = s.getBytes();
                 DatagramPacket dp = new DatagramPacket(buf,buf.length,ia,4099);

@@ -8,8 +8,6 @@ public class MCReader {
         try {
             MulticastSocket ms = new MulticastSocket(4099);
             InetAddress ia = InetAddress.getByName("experiment.mcast.net");
-        
-            System.out.println("Reader joining: " + java.net.NetworkInterface.getDefault());
             //InetAddress ia = InetAddress.getByName(args[0]);
             ms.joinGroup(ia);
             while(true) {
