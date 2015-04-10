@@ -1,0 +1,27 @@
+package ass4;
+import java.net.*;
+import java.io.*;
+
+public class MCReader {
+
+    public static void main(String args[]) {
+        try {
+            MulticastSocket ms = new MulticastSocket(4099);
+            InetAddress ia = InetAddress.getByName("experiment.mcast.net");
+        
+            System.out.println("Reader joining: " + java.net.NetworkInterface.getDefault());
+            //InetAddress ia = InetAddress.getByName(args[0]);
+            ms.joinGroup(ia);
+            while(true) {
+                byte[] buf = new byte[65536];
+                DatagramPacket dp = new DatagramPacket(buf,buf.length);
+                ms.receive(dp);
+                String s = new String(dp.getData(),0,dp.getLength());
+                System.out.println("Received: "+s);
+            }
+        } catch(IOException e) {
+            System.out.println("Exception:"+e);
+        }
+    }
+
+}
