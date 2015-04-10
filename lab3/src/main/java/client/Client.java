@@ -1,5 +1,4 @@
 package client;
-import main.ChatWindow;
 
 import java.net.*;
 import java.io.*;

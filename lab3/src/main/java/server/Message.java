@@ -2,7 +2,7 @@ package server;
 public class Message {
     String sender;
     String message;
-    String commandType = null;
+
     public Message(String sender, String message) {
         this.sender  = sender;
         this.message = message;

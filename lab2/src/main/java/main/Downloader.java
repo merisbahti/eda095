@@ -28,7 +28,7 @@ public class Downloader {
         Matcher m = p.matcher(everything);
         while (m.find()) {
             System.out.println(m.group(1));
-            urls.add(new URL(m.group(1)));
+            urls.add(new URL(url, m.group(1)));
         }
         // Create all threads, and start downloading: 
         for (URL urrl : urls) pool.submit(new Runner(urrl, downloadfolder));

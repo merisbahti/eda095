@@ -16,9 +16,8 @@ public class CrawlerThread extends Thread {
     }
 
     public void run() {
+        HTMLEditorKit.Parser parser = (new ParserGetter()).getParser();
         while (true) {
-            ParserGetter kit                = new ParserGetter();
-            HTMLEditorKit.Parser    parser  = kit.getParser();
             URL tmp = s.getFromQueue();
             if (tmp != null) {
                 HTMLEditorKit.ParserCallback callback = new LinkGetter(tmp.toString(), s);

@@ -15,7 +15,9 @@ public class Storage {
     
     public synchronized void addToQueue(String baseURL, String href) {
             try {
-                URL tmp = (!href.startsWith("http")) ? new URL(new URL(baseURL), href) : new URL(href);
+                URL tmp = new URL(href);
+                if (!href.startsWith("http"))
+                    System.out.println("href: " + href + " url: " + tmp);
                 if (tmp.getProtocol().equals("http") || tmp.getProtocol().equals("https")) {
                     if (!visited.contains(tmp) && !queue.contains(tmp)) queue.add(tmp);
                 } else if (tmp.getProtocol().equals("mailto")) {

@@ -27,7 +27,7 @@ public class Downloader {
         Matcher m = p.matcher(everything);
         while (m.find()) {
             System.out.println(m.group(1));
-            urls.add(new URL(m.group(1)));
+            urls.add(new URL(url, m.group(1)));
         }
         for (int i = 0; i < 5; i++) (new Thread(new Runner(urls, downloadfolder, i))).start();
     } catch (MalformedURLException e) {

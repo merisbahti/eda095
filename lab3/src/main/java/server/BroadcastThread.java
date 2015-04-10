@@ -24,7 +24,8 @@ public class BroadcastThread extends Thread {
                                 out.println(m.toString());
                                 out.flush();
                             } catch (IOException e) {
-                                System.err.println("IOException when sending msg to" + os.getKey());
+                                System.err.println("IOException when sending msg to" + os.getKey() + 
+                                ", he maybe left the server?");
                             }
                         }
                 }

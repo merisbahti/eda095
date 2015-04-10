@@ -25,8 +25,8 @@ public class Runner implements Runnable{
     }
     
     public void run() {
-        while (urls.size() > 0) {
-            URL u = popList();
+        URL u;
+        while ((u = popList()) != null) {
             try {
                 if (u.openConnection().getContentType().contains("application/pdf")) {
                     ReadableByteChannel rbc = Channels.newChannel(u.openStream());
@@ -48,7 +48,9 @@ public class Runner implements Runnable{
     // atomic 
     public URL popList() {
         synchronized (urls) {
-            return urls.remove(0);
+            if (urls.size() > 0)
+                return urls.remove(0);
+            return null;
         }
     }
 }
