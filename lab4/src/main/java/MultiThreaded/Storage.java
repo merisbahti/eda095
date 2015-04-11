@@ -1,4 +1,5 @@
 package MultiThreaded;
+
 import java.util.*;
 import java.net.*;
 
@@ -16,6 +17,7 @@ public class Storage {
     public void addToMails(String href) {
         synchronized (emails) {
             emails.add(href);
+        }
     }
 
     public void addToURLs(URL u) {

@@ -1,4 +1,4 @@
-package MultiThreaded;
+package SingleThreaded;
 
 import java.io.*;
 import java.net.*;
@@ -9,15 +9,35 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import util.ParserGetter;
 
-public class LinkGetter extends HTMLEditorKit.ParserCallback {
+public class LinkGetter2 extends HTMLEditorKit.ParserCallback {
 
     static URL baseURL;
-    private Storage s;
+    private ArrayList<URL> queue;
+    private Set<String> mails;
+    private ArrayList<URL> visited;
 
-    public LinkGetter(URL baseURL, Storage s) {
+
+    public LinkGetter2(URL baseURL, ArrayList<URL> queue, Set<String> mails, ArrayList<URL> visited) {
         super();
-        this.s = s;
+        this.queue      = queue;
         this.baseURL    = baseURL;
+        this.mails      = mails;
+        this.visited    = visited;
+    }
+
+    private void addToQueue(String href) {
+            try {
+                URL tmp = new URL(baseURL, href);
+                if (tmp.getProtocol().equals("http") || tmp.getProtocol().equals("https")) {
+                    if (!visited.contains(tmp) && !queue.contains(tmp)) queue.add(tmp);
+                } else if (tmp.getProtocol().equals("mailto")) {
+                    mails.add(tmp.toString());
+                } else {
+                    System.out.println("Not handled protocol: " + tmp);
+                }
+            } catch (Exception e) {
+                //System.out.println("URL Exception prolly:" + e.getMessage());
+            }
     }
 
     @Override
@@ -25,21 +45,7 @@ public class LinkGetter extends HTMLEditorKit.ParserCallback {
         //System.out.println("Start: " + tag + " Position: " + position);
         if (tag == HTML.Tag.A) {
             String href = (String) attributes.getAttribute(HTML.Attribute.HREF);
-            if (href != null)  {
-                try {
-                    URL tmp = new URL(baseURL, href);
-                    if (tmp.getProtocol().equals("http") || tmp.getProtocol().equals("https")) {
-                         s.addToURLs(tmp);
-                    } else if (tmp.getProtocol().equals("mailto")) {
-                        s.addToMails(tmp.toString());
-                    } else {
-                        System.out.println("Not handled protocol: " + tmp);
-                    }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                    System.out.println("URL Exception prolly:" + e.getMessage() + "\nAt baseURL :" + baseURL + "\n and URL: " + href);
-                }
-            }
+            if (href != null) addToQueue(href);
         }
     }
 
@@ -54,7 +60,7 @@ public class LinkGetter extends HTMLEditorKit.ParserCallback {
         if (tag == HTML.Tag.BASE) {
             String href = (String) attributes.getAttribute(HTML.Attribute.HREF);
             try {
-                baseURL = new URL(href);
+                baseURL = new URL (href);
             } catch (MalformedURLException e) {
                 System.out.println("URL fail in simpletag:" + e.getMessage() + "\nAt baseURL :" + baseURL + "\n and URL: " + href);
             }
@@ -65,11 +71,7 @@ public class LinkGetter extends HTMLEditorKit.ParserCallback {
         }
         if (tag == HTML.Tag.FRAME) {
             String href = (String) attributes.getAttribute(HTML.Attribute.SRC);
-            try {
-                s.addToURLs(new URL(baseURL, href));
-            } catch (MalformedURLException e) {
-                System.err.println("Failed adding frame url: " + href);
-            }
+            if (href != null) addToQueue(href);
         }
     }
 

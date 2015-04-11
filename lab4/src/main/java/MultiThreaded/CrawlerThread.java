@@ -17,11 +17,14 @@ public class CrawlerThread extends Thread {
 
     public void run() {
         URL tmp = s.getFromQueue();
+        System.out.println("Picking:" + tmp);
         while (tmp != null) {
             HTMLEditorKit.ParserCallback callback = new LinkGetter(tmp, s);
             try {
                 // check filetype here plz
-                if (tmp.openConnection().getContentType().contains("text/html;")) {
+                URLConnection uc = tmp.openConnection();
+                uc.setConnectTimeout(5000);
+                if (uc.getContentType().contains("text/html;")) {
                     InputStream in = new BufferedInputStream(tmp.openStream());
                     InputStreamReader r = new InputStreamReader(in);
                     HTMLEditorKit.Parser parser = (new ParserGetter()).getParser();
@@ -35,6 +38,7 @@ public class CrawlerThread extends Thread {
                 System.err.println(ex);
             }
             tmp = s.getFromQueue();
+            System.out.println("Picking:" + tmp);
         }
         System.out.println("tmp was null");
     }
