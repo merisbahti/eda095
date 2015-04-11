@@ -9,7 +9,7 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import util.ParserGetter;
 
-public class SingleThread {
+public class MultiThread{
     public static void main(String[] args) {
         Storage s = new Storage();
         try {
