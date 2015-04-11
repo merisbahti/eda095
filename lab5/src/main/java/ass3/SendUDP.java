@@ -6,17 +6,17 @@ import java.text.*;
 
 class SendUDP {
     public static void main(String[] args) {
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.out.println(args.length + " arguments recieved");
-            System.err.println("Please specify 2 arguments: port message");
+            System.err.println("Please specify 2 arguments: ipv4address port message");
             for (String s : args) 
                 System.out.println(s);
             System.exit(1);
         }
-        int port = Integer.parseInt(args[0]);
-        byte[] msg = args[1].getBytes();
         try { 
-            InetAddress addr = InetAddress.getByName("localhost");
+            InetAddress addr = InetAddress.getByName(args[0]);
+            int port = Integer.parseInt(args[1]);
+            byte[] msg = args[2].getBytes();
             DatagramSocket ds = new DatagramSocket();
             DatagramPacket out = new DatagramPacket(msg, msg.length, addr, port);
             ds.send(out);

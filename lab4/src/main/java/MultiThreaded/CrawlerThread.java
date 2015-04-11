@@ -16,30 +16,27 @@ public class CrawlerThread extends Thread {
     }
 
     public void run() {
-        HTMLEditorKit.Parser parser = (new ParserGetter()).getParser();
-        while (true) {
-            URL tmp = s.getFromQueue();
-            if (tmp != null) {
-                HTMLEditorKit.ParserCallback callback = new LinkGetter(tmp.toString(), s);
-                try {
-                    // check filetype here plz
-                    if (tmp.openConnection().getContentType().contains("text/html;")) {
-                        InputStream in = new BufferedInputStream(tmp.openStream());
-                        InputStreamReader r = new InputStreamReader(in);
-                        parser.parse(r, callback, true);
-                    }
-                } catch (NullPointerException e) {
-                    System.err.println("NPE at: " + tmp);
-                } catch (java.io.FileNotFoundException e) {
-                    System.err.println("File not found at: " + tmp);
-                } catch (IOException ex) {
-                    System.err.println(ex);
+        URL tmp = s.getFromQueue();
+        while (tmp != null) {
+            HTMLEditorKit.ParserCallback callback = new LinkGetter(tmp, s);
+            try {
+                // check filetype here plz
+                if (tmp.openConnection().getContentType().contains("text/html;")) {
+                    InputStream in = new BufferedInputStream(tmp.openStream());
+                    InputStreamReader r = new InputStreamReader(in);
+                    HTMLEditorKit.Parser parser = (new ParserGetter()).getParser();
+                    parser.parse(r, callback, true);
                 }
-            } else {
-                System.out.println("tmp was null");
-                //return;
+            } catch (NullPointerException e) {
+                System.err.println("NPE at: " + tmp);
+            } catch (java.io.FileNotFoundException e) {
+                System.err.println("File not found at: " + tmp);
+            } catch (IOException ex) {
+                System.err.println(ex);
             }
+            tmp = s.getFromQueue();
         }
+        System.out.println("tmp was null");
     }
 
 

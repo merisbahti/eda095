@@ -11,10 +11,10 @@ import util.ParserGetter;
 
 public class LinkGetter extends HTMLEditorKit.ParserCallback {
 
-    static String baseURL;
+    static URL baseURL;
     private Storage s;
 
-    public LinkGetter(String baseURL, Storage s) {
+    public LinkGetter(URL baseURL, Storage s) {
         super();
         this.s = s;
         this.baseURL    = baseURL;
@@ -25,7 +25,20 @@ public class LinkGetter extends HTMLEditorKit.ParserCallback {
         //System.out.println("Start: " + tag + " Position: " + position);
         if (tag == HTML.Tag.A) {
             String href = (String) attributes.getAttribute(HTML.Attribute.HREF);
-            s.addToQueue(baseURL, href);
+            if (href != null) 
+            try {
+                URL tmp = new URL(baseURL, href);
+                if (tmp.getProtocol().equals("http") || tmp.getProtocol().equals("https")) {
+                     s.addToURLs(tmp);
+                } else if (tmp.getProtocol().equals("mailto")) {
+                    s.addToMails(tmp.toString());
+                } else {
+                    System.out.println("Not handled protocol: " + tmp);
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                System.out.println("URL Exception prolly:" + e.getMessage() + "\nAt baseURL :" + baseURL + "\n and URL: " + href);
+            }
         }
     }
 
@@ -49,8 +62,11 @@ public class LinkGetter extends HTMLEditorKit.ParserCallback {
         }
         if (tag == HTML.Tag.FRAME) {
             String href = (String) attributes.getAttribute(HTML.Attribute.SRC);
-            s.addToQueue(baseURL, href);
-            System.out.println("Frame: " + href);
+            try {
+                s.addToURLs(new URL(baseURL, href));
+            } catch (MalformedURLException e) {
+                System.err.println("Failed adding frame url: " + href);
+            }
         }
     }
 

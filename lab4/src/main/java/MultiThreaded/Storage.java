@@ -13,27 +13,29 @@ public class Storage {
         visited = new ArrayList<URL>(); 
     }
     
-    public synchronized void addToQueue(String baseURL, String href) {
-            try {
-                URL tmp = new URL(href);
-                if (!href.startsWith("http"))
-                    System.out.println("href: " + href + " url: " + tmp);
-                if (tmp.getProtocol().equals("http") || tmp.getProtocol().equals("https")) {
-                    if (!visited.contains(tmp) && !queue.contains(tmp)) queue.add(tmp);
-                } else if (tmp.getProtocol().equals("mailto")) {
-                    emails.add(tmp.toString());
-                } else {
-                    System.out.println("Not handled protocol: " + tmp);
-                }
-            } catch (Exception e) {
-                //System.out.println("URL Exception prolly:" + e.getMessage());
-            }
+    public void addToMails(String href) {
+        synchronized (emails) {
+            emails.add(href);
     }
-    public synchronized URL getFromQueue() {
+
+    public void addToURLs(URL u) {
+        synchronized (visited){
+            synchronized (queue) {
+                if (!visited.contains(u) && !queue.contains(u))
+                queue.add(u);
+            }
+        }
+    }
+
+    public URL getFromQueue() {
         try {
-            URL url = queue.remove(0);
-            visited.add(url);
-            return url;
+            synchronized (visited) {
+                synchronized (queue) {
+                    URL url = queue.remove(0);
+                    visited.add(url);
+                    return url;
+                }
+            }
         } catch (IndexOutOfBoundsException e) {
             return null;
         }

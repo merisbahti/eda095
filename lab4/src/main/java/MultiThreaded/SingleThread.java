@@ -11,11 +11,25 @@ import util.ParserGetter;
 
 public class SingleThread {
     public static void main(String[] args) {
-        ParserGetter kit = new ParserGetter();
-        HTMLEditorKit.Parser    parser = kit.getParser();
         Storage s = new Storage();
-        s.addToQueue("http://cs.lth.se/", "http://cs.lth.se");
+        try {
+            s.addToURLs(new URL(new URL("http://cs.lth.se/"), "http://cs.lth.se"));
+        } catch (Exception e) {
+            System.out.println("Failed adding first link");
+            System.exit(1);
+        }
         (new AnnouncerThread(s)).start();
-        for (int i = 0; i < 10; i++) (new CrawlerThread(s)).start();
+        (new CrawlerThread(s)).start();
+        try {
+            System.out.println("Sleeping for 2 seconds");
+            Thread.sleep(2000);
+            System.out.println("Awake.");
+        } catch (Exception e) {
+            System.err.println("Couldn't sleep.");
+        }
+        for (int i = 1; i < 10; i++) { 
+            System.out.println("Starting thread " + i);
+            (new CrawlerThread(s)).start();
+        };
     }
 }
