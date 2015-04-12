@@ -53,10 +53,12 @@ public class LinkGetter extends HTMLEditorKit.ParserCallback {
         //System.out.println("Simple: " + t + " Position: " + pos);
         if (tag == HTML.Tag.BASE) {
             String href = (String) attributes.getAttribute(HTML.Attribute.HREF);
-            try {
-                baseURL = new URL(href);
-            } catch (MalformedURLException e) {
-                System.out.println("URL fail in simpletag:" + e.getMessage() + "\nAt baseURL :" + baseURL + "\n and URL: " + href);
+            if (href != null) {
+                try {
+                    baseURL = new URL(href);
+                } catch (MalformedURLException e) {
+                    System.out.println("URL fail in simpletag:" + e.getMessage() + "\nAt baseURL :" + baseURL + "\n and URL: " + href);
+                }
             }
         }
         if (tag == HTML.Tag.IMG) {
@@ -65,10 +67,15 @@ public class LinkGetter extends HTMLEditorKit.ParserCallback {
         }
         if (tag == HTML.Tag.FRAME) {
             String href = (String) attributes.getAttribute(HTML.Attribute.SRC);
-            try {
-                s.addToURLs(new URL(baseURL, href));
-            } catch (MalformedURLException e) {
-                System.err.println("Failed adding frame url: " + href);
+            if (href != null) {
+                tmp = new URL(baseURL, href);
+                if (tmp.getProtocol().equals("http") || tmp.getProtocol().equals("https")) {
+                    try {
+                        s.addToURLs(tmp);
+                    } catch (MalformedURLException e) {
+                        System.err.println("Failed adding frame url: " + href);
+                    }
+                }
             }
         }
     }
