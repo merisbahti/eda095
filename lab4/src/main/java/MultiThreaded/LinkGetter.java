@@ -68,13 +68,13 @@ public class LinkGetter extends HTMLEditorKit.ParserCallback {
         if (tag == HTML.Tag.FRAME) {
             String href = (String) attributes.getAttribute(HTML.Attribute.SRC);
             if (href != null) {
-                tmp = new URL(baseURL, href);
-                if (tmp.getProtocol().equals("http") || tmp.getProtocol().equals("https")) {
-                    try {
+                try {
+                    URL tmp = new URL(baseURL, href);
+                    if (tmp.getProtocol().equals("http") || tmp.getProtocol().equals("https")) {
                         s.addToURLs(tmp);
-                    } catch (MalformedURLException e) {
-                        System.err.println("Failed adding frame url: " + href);
                     }
+                } catch (MalformedURLException e) {
+                        System.err.println("Failed adding frame url: " + href);
                 }
             }
         }

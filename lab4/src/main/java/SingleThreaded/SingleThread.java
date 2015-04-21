@@ -26,7 +26,7 @@ public class SingleThread {
             URL url = queue.remove(0);
             visited.add(url);
             System.out.println("Visiting url: " + url);
-            HTMLEditorKit.ParserCallback callback = new LinkGetter2(url, queue, emails, visited);
+            HTMLEditorKit.ParserCallback callback = new LinkGetter(url, queue, emails, visited);
             try {
                 if (url.openConnection().getContentType().contains("text/html;")) { // filecheck
                     InputStream in = new BufferedInputStream(url.openStream());

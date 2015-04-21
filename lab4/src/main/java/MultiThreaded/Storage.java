@@ -42,20 +42,23 @@ public class Storage {
             return null;
         }
     }
-    //getQueueSize
 
-    public synchronized int getQueueSize() {
-        return queue.size();
+    public int getQueueSize() {
+        synchronized (queue) {
+            return queue.size();
+        }
     }
 
-    //getVisitedSize
-
-    public synchronized int getVisitedSize() {
-        return visited.size();
+    public int getVisitedSize() {
+        synchronized (visited)  {
+            return visited.size();
+        }
     }
 
     //getEmails
-    public synchronized Set<String> getEmails() {
-        return emails;
+    public Set<String> getEmails() {
+        synchronized (emails) {
+            return emails;
+        }
     }
 }
